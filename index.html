@@ -6,7 +6,8 @@
   <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 
   <link rel="stylesheet" type="text/css" href="d3-polymer/shared/tooltip-style.css">
-  <link rel="import" href="d3-polymer/bar-chart/bar-chart.html">
+  <link rel="import" href="piano-d3-polymer/bar-chart/bar-chart.html">
+  <link rel="import" href="piano-d3-polymer/table-chart/table-chart.html">
 </head>
 <body>
 <div style="margin-top: 50px;">
@@ -15,12 +16,10 @@
       xVar="date"
       yVar="subscribers"
   ></bar-chart>
-  <bar-chart
-      dataFile="http://localhost:8000/activity/"
-      xVar="timestamp"
-      yVar="volume"
-      fullWidth="1300"
-  ></bar-chart>
+  <table-chart
+      dataFile="cnbc_table.json"
+  ></table-chart>
+
 </div>
 
 

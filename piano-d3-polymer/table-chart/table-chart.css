@@ -1,0 +1,84 @@
+* {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+h1 {
+    font: 16px sans-serif;
+    font-weight: bold;
+    text-decoration: underline;
+    }
+
+div {
+height: 17px;
+}
+div.container {
+float: left;
+width: 50%;
+}
+div.negative {
+float: right;
+background-color: steelblue;
+}
+div.positive {
+background-color: steelblue;
+}
+
+table {
+font: 14px sans-serif;
+vertical-align: middle;
+text-align: left;
+border-collapse: collapse;
+}
+
+td,th {
+padding-top: 2px;
+padding-bottom: 2px;
+}
+
+
+tr.datarow {
+  position: relative;
+}
+
+tr.even {
+font-weight: bold;
+}
+
+td.chart {
+background-color: white;
+margin-left: -75px;
+position: absolute;
+z-index: -1;
+}
+
+tr.totalrow {
+  position: relative;
+}
+
+tr.head {
+font-weight: bold;
+margin-top: 5px;
+}
+
+th.chart {
+background-color: white;
+margin-left: -50px;
+position: absolute;
+z-index: -1;
+}
+
+
+th {
+padding-left: 10px;
+}
+
+th.total {
+text-align: right;
+}
+
+td.data {
+padding-left: 10px;
+
+}
+td.value {
+text-align: right;
+}
