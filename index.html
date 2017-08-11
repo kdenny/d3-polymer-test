@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/polymer/0.5.0/polymer.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="piano-d3-polymer/shared/tooltip-style.css">
+  <link rel="import" href="piano-d3-polymer/bar-chart/bar-chart.html">
+</head>
+<body>
+<div style="margin-top: 50px;">
+  <bar-chart
+      dataFile="http://localhost:8000/subscription/"
+      xVar="date"
+      yVar="subscribers"
+  ></bar-chart>
+  <bar-chart
+      dataFile="http://localhost:8000/activity/"
+      xVar="timestamp"
+      yVar="volume"
+      fullWidth="1300"
+  ></bar-chart>
+</div>
+
+
+</body>

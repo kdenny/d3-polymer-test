@@ -1,0 +1,43 @@
+* {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+body {
+  /*font: 10px sans-serif;*/
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h2 {
+    background:#2356ab;
+    padding:10px;
+    margin-top: -13px;
+    width: 105%;
+    margin-left: -12px;
+}
+
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis path {
+    opacity: 0.2;
+}
+
+.bar {
+  fill: #dcdee3;
+}
+
+.bar:hover {
+  fill: #9194a6;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.tick line{
+    opacity: 0.08;
+}

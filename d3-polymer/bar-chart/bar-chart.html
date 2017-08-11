@@ -1,0 +1,112 @@
+<polymer-element name="bar-chart" attributes="dataFile, xVar, yVar, fullWidth, chartId">
+    <template>
+        <link rel="stylesheet" type="text/css" href="bar-chart.css">
+        <svg id="svg"></svg>
+    </template>
+    <script>
+        Polymer({
+            createElements: function () {
+              var margin = {top: 40, right: 20, bottom: 30, left: 60};
+              if (this.fullWidth) {
+                  this.width = Number(this.fullWidth) - margin.left - margin.right;
+              }
+              else {
+                  this.width = 800 - margin.left - margin.right;
+              }
+              this.height = 500 - margin.top - margin.bottom;
+
+
+            this.x = d3.scale.ordinal()
+                .rangeRoundBands([0, this.width], .25);
+
+            this.y = d3.scale.linear()
+                .range([this.height, 0]);
+
+            this.xAxis = d3.svg.axis()
+                .scale(this.x)
+                .ticks(3)
+                .orient("bottom");
+
+            this.yAxis = d3.svg.axis()
+                .scale(this.y)
+                .innerTickSize(-this.width)
+                .orient("left");
+
+            this.tip = d3.tip()
+              .attr('class', 'd3-tip')
+              .offset([-10, 0])
+              .html(function(d) {
+                return "<div class='box'><h2></h2>" + "<strong>" + d.x + "</strong> " + "<br>" +
+                        "<strong>New Subscribers:</strong> " +
+                        "<span style='color:#2356ab'>" + d.y + "</span>" + "</div>";
+              });
+
+            this.svg = d3.select(this.$.svg)
+                .attr("width", this.width + margin.left + margin.right)
+                .attr("height", this.height + margin.top + margin.bottom)
+              .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            this.svg.call(this.tip);
+
+
+            },
+            drawChart: function () {
+
+              var me = this;
+
+              me.data.forEach(function(d) {
+                d.x = d[me.xVar];
+                d.y = d[me.yVar];
+              });
+
+              me.x.domain(me.data.map(function(d) {
+                  return d.x;
+              }));
+              me.y.domain([0, d3.max(me.data, function(d) {
+                  return d.y;
+              })]);
+
+              me.svg.append("g")
+                  .attr("class", "x axis")
+                  .attr("transform", "translate(0," + me.height + ")")
+                  .call(me.xAxis);
+
+              me.svg.append("g")
+                  .attr("class", "y axis")
+                  .call(me.yAxis)
+                  .append("text")
+                  .attr("transform", "rotate(-90)")
+                  .attr("y", 6)
+                  .attr("dy", ".71em")
+                  .style("text-anchor", "end")
+                  .text("New Subscriptions");
+
+              me.svg.selectAll(".bar")
+                  .data(me.data)
+                  .enter().append("rect")
+                  .attr("class", "bar")
+                  .attr("x", function(d) { return me.x(d.x); })
+                  .attr("width", me.x.rangeBand())
+                  .attr("y", function(d) { return me.y(d.y); })
+                  .attr("height", function(d) { return me.height - me.y(d.y); })
+                  .on('mouseover', me.tip.show)
+                  .on('mouseout', me.tip.hide);
+
+            },
+
+            getData: function () {
+              var me = this;
+              d3.json(me.dataFile, function(error, rawData) {
+                    me.data = rawData;
+                    me.drawChart();
+              })
+
+            },
+            domReady: function () {
+              this.createElements();
+              this.getData();
+            }
+        });
+    </script>
+</polymer-element>
