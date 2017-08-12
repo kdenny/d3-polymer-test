@@ -1,25 +1,39 @@
 <polymer-element name="table-chart" attributes="dataFile, headerFields, inlineChartFields, intFields, percentFields, intPercentFields">
     <template>
         <link rel="stylesheet" type="text/css" href="table-chart.css">
-        <svg id="svg"></svg>
+
+        <style>
+            .chart {
+            background-color: white;
+            margin-left: -75px;
+            position: absolute;
+            z-index: -1;
+            }
+        
+        </style>
+
+        <div id="dt" style="width: 500px; height: 300px;"></div>
+
+        
+        
     </template>
     <script>
         Polymer({
             createElements: function () {
-              this.chartWidth = "175px";
               this.percent = d3.format(".2%");
 
+              var foobar = this.$.dt;
 
-              this.table = d3.select("body").append("table");
-
-
+              this.table = d3.select(foobar)
+              .append("table");
 
             },
             drawChart: function () {
 
               var me = this;
+              var chartWidth = "175px";
 
-              me.data = [
+              var data = [
                 ["Credit", - 0.040],
                 ["Relative Value", - 0.008],
                 ["Multi-Strategy", - 0.030],
@@ -32,64 +46,62 @@
                 ["Total", - 0.156]
               ];
 
-              me.data.sort(function(a, b) {return d3.descending(a[1], b[1])});
+              data.sort(function(a, b) {return d3.descending(a[1], b[1])});
 
-              me.x = d3.scale.linear()
-                  .domain([0, d3.max(me.data, function(d) { return Math.abs(d[1]); })])
+              var x = d3.scale.linear()
+                  .domain([0, d3.max(data, function(d) { return Math.abs(d[1]); })])
                   .range(["0%", "100%"]);
 
 
               // Create a table with rows and bind a data row to each table row
-              me.tr = me.table.selectAll("tr.data")
-                .data(me.data)
+              var tr = me.table.selectAll("tr.data")
+                .data(data)
                 .enter()
                 .append("tr")
                 .attr("class", "datarow");
 
-              d3.selection.prototype.last = function() {
-                var last = this[0].length - 1;
-                var b = d3.select(this[0][last])
-                return b;
-              };
+            //   d3.selection.prototype.last = function() {
+            //     var last = this[0].length - 1;
+            //     var b = d3.select(this[0][last])
+            //     return b;
+            //   };
 
 
-              // Set the even columns
-              me.tr.last().attr("class", "datarow head");
+            //   // Set the even columns
+            //   me.tr.last().attr("class", "datarow head");
 
 
               // Create the name column
-              me.tr.append("td").attr("class", "data name")
+              tr.append("td").attr("class", "data name")
                   .text(function(d) { return d[0] });
 
               // Create the percent value column
-              me.tr.append("td").attr("class", "data value")
-                  .text(function(d) { return me.percent(d[1]) })
+              tr.append("td").attr("class", "data value")
+                  .text(function(d) { return me.percent(d[1]) });
 
               // Create a column at the beginning of the table for the chart
-              me.chart = me.tr.append("td").attr("class", "chart").attr("width", me.chartWidth);
+              var chart = tr.append("td").attr("class", "chart").attr("width", chartWidth);
 
               // Create the div structure of the chart
-              me.chart.append("div").attr("class", "container").append("div").attr("class", "negative");
+              chart.append("div").attr("class", "container").append("div").attr("class", "negative");
 
         //       Creates the negative div bar
-              me.tr.select("div.negative")
+              tr.select("div.negative")
                 .style("width", "0%")
                 .transition()
                 .duration(500)
-                .style("width", function(d) { return d[1] > 0 ? "0%" : me.x(Math.abs(d[1]));});
-
+                .style("width", function(d) { return d[1] > 0 ? "0%" : x(Math.abs(d[1]));});
             },
 
             getData: function () {
               var me = this;
-              d3.json(me.dataFile, function(error, rawData) {
-                    me.data = rawData;
-                    me.drawChart();
-              })
+              
+              me.drawChart();
 
             },
             domReady: function () {
               this.createElements();
+            //   this.drawChart();
               this.getData();
             }
         });
